@@ -1,16 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import reportWebVitals from './reportWebVitals';
 // A generic router. leverages url to keep track of where the user is navigating through and it behaves typically as any router based on url is expected to behave
 
-import './index.scss';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { UserProvider } from './contexts/user.context';
+import { ProductsProvider } from './contexts/products.context';
+
+import './index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <UserProvider>
+        <ProductsProvider>
+          <App />
+        </ProductsProvider>
+      </UserProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
