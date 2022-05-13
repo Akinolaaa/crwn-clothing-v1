@@ -5,7 +5,28 @@ import Authentication from './routes/authentication/authentication.component.jsx
 import Shop from './routes/shop/shop.component';
 import Checkout from './routes/checkout/checkout.component.jsx';
 
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { createUserDocumentFromAuth, onAuthStateChangedListener } from './utils/firebase/firebase.utils';
+import { setCurrentUser } from './store/user/user.action.js';
+
+
+
 const App =() => {
+  const dispatch = useDispatch(); 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener((user) => {
+      //console.log(user);
+      if (user) { 
+        createUserDocumentFromAuth(user)
+      }
+      dispatch(setCurrentUser(user));
+    });
+
+    return unsubscribe
+  }, []); 
+  // Put dispatch to clear warning. Why it's not there is cos dispatch instance does not change so it doesn't affect anything
+
   return (
     <Routes>
       <Route path='/' element={<Navigation />} >

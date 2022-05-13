@@ -2,26 +2,31 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-// A generic router. leverages url to keep track of where the user is navigating through and it behaves typically as any router based on url is expected to behave
+// A generic router. leverages url to keep track of where the user is navigating 
+// through and it behaves typically as any router based on url is expected to behave
 
 import App from './App';
-import { UserProvider } from './contexts/user.context';
-import { CategoriesProvider } from './contexts/categories.context';
+//import { UserProvider } from './contexts/user.context';
+//import { CategoriesProvider } from './contexts/categories.context';
 import { CartProvider } from './contexts/cart.context';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 import './index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <UserProvider>
-        <CategoriesProvider>
-          <CartProvider>
-            <App />
-          </CartProvider>
-        </CategoriesProvider>
-      </UserProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+      {/* <UserProvider> */}
+          {/* <CategoriesProvider> */}
+            {/* <CartProvider> */}
+              <App />
+            {/* </CartProvider> */}
+          {/* </CategoriesProvider> */}
+        {/* </UserProvider> */}
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
