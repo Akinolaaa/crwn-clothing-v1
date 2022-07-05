@@ -1,11 +1,8 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import FormInput from '../form-input/form-input.component';
 import Button, {BUTTON_TYPE_CLASSES} from '../button/button.component';
-//import { UserContext } from '../../contexts/user.context';
-import { 
-  signInWithGooglePopup,
-  signInAuthUserWithEmailAndPassword,
-} from '../../utils/firebase/firebase.utils';
+import { googleSignInStart, emailSignInStart } from '../../store/user/user.action';
 import './sign-in-form.component.scss'
 
 const defaultFields = {
@@ -16,11 +13,11 @@ const defaultFields = {
 const SignInForm = () => {
   const [signInFields, setSignInFields] = useState(defaultFields);
   const { email, password } = signInFields;
-
+  const dispatch = useDispatch();
   //const { setCurrentUser } = useContext(UserContext);
 
   const signInWithGoogle = async() => {
-    await signInWithGooglePopup();
+    dispatch(googleSignInStart());
   }
 
   const resetSignInFields = () => {
@@ -36,8 +33,7 @@ const SignInForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await signInAuthUserWithEmailAndPassword(email, password);
-      // setCurrentUser(user); // removed because of firebase auth change listener
+      dispatch(emailSignInStart(email, password));
       resetSignInFields();
     } catch(error) {
       // console.log({ error })

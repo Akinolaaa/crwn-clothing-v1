@@ -1,17 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { 
-  getAuth, 
-  signInWithRedirect, 
-  signInWithPopup,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signOut,
-  onAuthStateChanged } from 'firebase/auth';
+  getAuth, signInWithRedirect, 
+  signInWithPopup, createUserWithEmailAndPassword,
+  signInWithEmailAndPassword, GoogleAuthProvider,
+  signOut, onAuthStateChanged } from 'firebase/auth';
 import { 
-  getFirestore, 
-  doc, getDoc, 
+  getFirestore, doc, getDoc, 
   setDoc, collection, 
   writeBatch, query, getDocs } from 'firebase/firestore';
 
@@ -36,7 +31,9 @@ export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
-export const db = getFirestore();
+
+//Database
+export const db = getFirestore(firebaseApp);
 
 export const addCollectionAndDocuments = async(collectionKey, objectsToAdd) => {
   const collectionRef = collection(db, collectionKey);
@@ -87,7 +84,7 @@ export const createUserDocumentFromAuth = async (
       console.log('error creating the user')
     }
   }
-  return userDocRef; 
+  return userSnapshot; 
 }
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -104,8 +101,24 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   return await signInWithEmailAndPassword(auth, email, password)
 }
 
-export const signOutUser = async () => await signOut(auth);
-
+export const signOutUser = async () => {
+  console.log("here");
+  await signOut(auth);
+  console.log("there");
+}
 export const onAuthStateChangedListener = (callback) => {
   return onAuthStateChanged(auth, callback)
+}
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    )
+  })
 }
