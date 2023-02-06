@@ -1,10 +1,11 @@
+import './checkout.styles.scss'
 import {  useSelector } from 'react-redux';
 import { selectCartItems, selectCartTotal } from '../../store/cart/cart.selector';
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
-import './checkout.styles.scss'
+import PaymentForm from '../../components/payment-form/payment-form.component';
 //import Button from "../../components/button/button.component";
 
-const Checkout = ( ) => {
+const Checkout = () => {
   const cartItems = useSelector(selectCartItems);
   const cartTotal = useSelector(selectCartTotal);
   //const { cartItems, cartTotal } = useContext(CartContext);
@@ -37,6 +38,7 @@ const Checkout = ( ) => {
         })
       }
       <span className="total">Total: {`$ ${cartTotal}`} </span>
+      <PaymentForm />
     </div>
   )
 }
