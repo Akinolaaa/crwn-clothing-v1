@@ -8,12 +8,20 @@ import { rootSaga } from './root-saga';
 
 import { rootReducer } from './root-reducer';
 
+export type RootState = ReturnType<typeof rootReducer>;
 
 const persistConfig = {
   key: 'root',
   storage,
   whitelist:['cart'],
   //blacklist:['user']
+}
+
+//Because this ,window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__, was throwing an error, we have to expand the window object type
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose
+  }
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

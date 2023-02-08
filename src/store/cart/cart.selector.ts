@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect'; 
+import { CartState } from './cart.reducer';
+import { RootState } from '../store';
 // recall, it is used when you do some manipulations of data in reducer for caching(memoization) 
 
-const selectCartReducer = state => state.cart;
+const selectCartReducer = (state:RootState):CartState => state.cart;
 
 export const selectCartItems = createSelector([selectCartReducer],
   (cart) => cart.cartItems
@@ -20,5 +22,5 @@ export const selectCartTotal = createSelector(
 export const selectCartCount = createSelector([selectCartItems],(cart) => {
   console.log(cart)
   return cart.reduce((total, cartItem) => total + cartItem.quantity, 0)
-}
+} 
 );

@@ -1,9 +1,10 @@
 import { createSelector } from 'reselect';
 import { CategoriesState } from './category.reducer';
 import { CategoryMap } from './category.types';
+import { RootState } from '../store';
 // This is used as a form of memoization(caching) so the component does not have to rerender everytime it gets a new object due to reduce function always running anytime useSelector is called
 
-const selectCategoryReducer = (state): CategoriesState => state.categories;
+const selectCategoryReducer = (state:RootState): CategoriesState => state.categories;
 
 export const selectCategories = createSelector(
   [selectCategoryReducer],

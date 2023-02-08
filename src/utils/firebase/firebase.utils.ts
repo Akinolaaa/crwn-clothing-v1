@@ -4,11 +4,13 @@ import {
   getAuth, signInWithRedirect, 
   signInWithPopup, createUserWithEmailAndPassword,
   signInWithEmailAndPassword, GoogleAuthProvider,
-  signOut, onAuthStateChanged } from 'firebase/auth';
+  signOut, onAuthStateChanged, User, NextOrObserver } from 'firebase/auth';
 import { 
   getFirestore, doc, getDoc, 
   setDoc, collection, 
-  writeBatch, query, getDocs } from 'firebase/firestore';
+  writeBatch, query, getDocs, QueryDocumentSnapshot } from 'firebase/firestore';
+
+import { Category } from '../../store/categories/category.types';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCGUu7iEuUIQLtITcuFhrcmRwpOy6HZquk",
@@ -35,11 +37,14 @@ export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googlePro
 //Database
 export const db = getFirestore(firebaseApp);
 
-export const addCollectionAndDocuments = async(collectionKey, objectsToAdd) => {
+export type ObjectToAdd = {
+  title: string;
+}
+export const addCollectionAndDocuments = async<T extends ObjectToAdd>(collectionKey:string, objectsToAdd: T[]):Promise<void> => {
   const collectionRef = collection(db, collectionKey);
   // Transaction is a word that represents a successful unit of work to a db
   const batch = writeBatch(db);
-  objectsToAdd.forEach(object => {
+  objectsToAdd.forEach((object:any) => {
     const docRef = doc(collectionRef, object.title.toLowerCase());
     batch.set(docRef, object)
   });
@@ -47,11 +52,11 @@ export const addCollectionAndDocuments = async(collectionKey, objectsToAdd) => {
   console.log('done adding collection x docs');
 }
 
-export const getCategoriesAndDocuments = async () => {
+export const getCategoriesAndDocuments = async ():Promise<Category[]> => {
   const collectionRef = collection(db, 'categories');
   const q = query(collectionRef);
   const querySnapshot = await getDocs(q);
-  const categoriesArray = querySnapshot.docs.map(docSnapshot => docSnapshot.data())
+  const categoriesArray = querySnapshot.docs.map(docSnapshot => docSnapshot.data() as Category)
   
   /* .reduce((acc, docSnapshot) => {
     const { title, items } = docSnapshot.data();
@@ -61,9 +66,16 @@ export const getCategoriesAndDocuments = async () => {
   return categoriesArray;
 }
 
-
+export type AdditionalInformation = {
+  displayName?: string;
+}
+export type UserData = {
+  createdAt: Date;
+  displayName: string;
+  email: string;
+}
 export const createUserDocumentFromAuth = async (
-  userAuth, additionalInformation={}) => {
+  userAuth:User, additionalInformation={} as AdditionalInformation):Promise<void | QueryDocumentSnapshot<UserData>> => {
   if (!userAuth) {
     return;
   }
@@ -81,20 +93,20 @@ export const createUserDocumentFromAuth = async (
         displayName, email, createdAt, ...additionalInformation
       })
     }catch(err) {
-      console.log('error creating the user')
+      console.log('error creating the user', err)
     }
   }
-  return userSnapshot; 
+  return userSnapshot as QueryDocumentSnapshot<UserData>; 
 }
 
-export const createAuthUserWithEmailAndPassword = async (email, password) => {
+export const createAuthUserWithEmailAndPassword = async (email:string, password:string) => {
   if (!email || !password) {
     return;
   }
   return await createUserWithEmailAndPassword(auth, email, password)
 }
 
-export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+export const signInAuthUserWithEmailAndPassword = async (email:string, password:string) => {
   if (!email || !password) {
     return;
   }
@@ -102,15 +114,13 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 }
 
 export const signOutUser = async () => {
-  console.log("here");
   await signOut(auth);
-  console.log("there");
 }
-export const onAuthStateChangedListener = (callback) => {
+export const onAuthStateChangedListener = (callback:NextOrObserver<User>) => {
   return onAuthStateChanged(auth, callback)
 }
 
-export const getCurrentUser = () => {
+export const getCurrentUser = (): Promise<User | null> => {
   return new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(
       auth,
