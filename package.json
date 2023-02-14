@@ -12,7 +12,7 @@
     "@types/node": "^18.11.19",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
-    "babel-plugin-macros": "^3.1.0",
+    "@types/styled-components": "^5.1.26",
     "dotenv": "^16.0.1",
     "firebase": "^9.6.10",
     "react": "^17.0.2",
@@ -56,5 +56,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/redux-logger": "^3.0.9",
+    "babel-plugin-macros": "^3.1.0"
   }
 }

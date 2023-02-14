@@ -1,4 +1,4 @@
-import {CartDropdownContainer, EmptyMessage, CartItems} from './cart-dropdown.styles.jsx';
+import {CartDropdownContainer, EmptyMessage, CartItems} from './cart-dropdown.styles';
 //import { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -6,8 +6,8 @@ import CartItem from '../cart-item/cart-item.component';
 import Button from '../button/button.component';
 //import { CartContext } from '../../contexts/cart.context';
 import { useSelector } from 'react-redux';
-import { selectCartItems } from '../../store/cart/cart.selector.jsx';
-import { setIsCartOpen } from '../../store/cart/cart.action.jsx';
+import { selectCartItems } from '../../store/cart/cart.selector';
+import { setIsCartOpen } from '../../store/cart/cart.action';
 
 
 const CartDropdown = () => {
