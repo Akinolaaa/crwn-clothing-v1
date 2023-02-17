@@ -8,13 +8,17 @@ import './category.styles.scss'
 import { selectCategoriesMap, selectCategoriesIsLoading } from '../../store/categories/category.selector';
 
 const Category = () => {
-  const { category } = useParams();
+  let category = "";
+  const params = useParams();
+  if(params.category){
+    category = params.category;
+  }
   const  categoriesMap = useSelector(selectCategoriesMap);
   const isLoading = useSelector(selectCategoriesIsLoading);
   const [products, setProducts] = useState(categoriesMap[category]);
 
   useEffect(() => {
-    setProducts(categoriesMap[category]);
+    setProducts(categoriesMap[(category as string)]);
   }, [category, categoriesMap])
   
   return(

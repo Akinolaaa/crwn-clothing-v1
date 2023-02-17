@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
+import { AuthError, AuthErrorCodes } from 'firebase/auth'
 import { signUpStart } from '../../store/user/user.action';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
@@ -13,11 +14,11 @@ const defaultFormFields = {
 }
 
 const SignUpForm = () => {
-  const [formFields, setFormFields] =useState(defaultFormFields);
+  const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
   const dispatch = useDispatch();
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     //console.log(name, value);
     setFormFields({ ...formFields, [name]: value });
@@ -27,7 +28,7 @@ const SignUpForm = () => {
     setFormFields(defaultFormFields);
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   
     // means you want to handle everything that happens onSubmission of the form(no get method)
@@ -40,7 +41,7 @@ const SignUpForm = () => {
       resetFormFields();
       // create user document from auth
     } catch (err) {
-      if(err.code === 'auth/email-already-in-use'){
+      if((err as AuthError).code === AuthErrorCodes.EMAIL_EXISTS){
         alert('Cannot create user, email already in use')
       } else {
         console.log('user creation encountered error', err);
@@ -69,7 +70,7 @@ const SignUpForm = () => {
           label="Confirm Password" type="password" onChange={handleChange} name="confirmPassword" value={confirmPassword} required 
         />
 
-        <Button type="submit" onChange={handleChange}> Sign Up </Button>
+        <Button type="submit" > Sign Up </Button>
       </form>
     </div>
   )

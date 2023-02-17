@@ -1,5 +1,7 @@
 import { ButtonHTMLAttributes, FC } from 'react';
-import {BaseButton, GoogleSignInButton, InvertedButton} from'./button.styles';
+import {
+  BaseButton, GoogleSignInButton, 
+  InvertedButton, ButtonSpinner } from'./button.styles';
 /**Three types of buttons in our project: button
  * Default
  * Inverted
@@ -25,11 +27,13 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean,
 }
 
-//const Button = ({ children, buttonType, ...otherProps }::ButtonProps  => {
-const Button:FC<ButtonProps> = ({ children, buttonType, ...otherProps }) => {
+//const Button = ({ children, buttonType, ...otherProps }:ButtonProps  => {
+const Button:FC<ButtonProps> = ({ children, isLoading, buttonType, ...otherProps }) => {
   const CustomButton = getButton(buttonType)
   return (
-    <CustomButton {...otherProps}> {children} </CustomButton>
+    <CustomButton disabled={isLoading} {...otherProps}> 
+      { isLoading ? <ButtonSpinner /> : children } 
+    </CustomButton>
   )
 }
 
