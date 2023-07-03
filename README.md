@@ -1,6 +1,6 @@
 # Crwne Commerce - E-commerce Web Application
 
-![Crwne Commerce](crwne-commerce.png)
+[Crwne Commerce]([crwne-commerce.png](https://crwne-commerce.netlify.app/))
 
 Welcome to Crwne Commerce, an e-commerce web application that offers a wide range of trendy clothes. This application is built with React, TypeScript, Redux, Redux-Saga, Styled Components, SCSS, and React Router DOM, and utilizes Firebase for authentication and as the database. 
 
