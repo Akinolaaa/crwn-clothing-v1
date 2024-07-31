@@ -1,4 +1,5 @@
-import { compose, legacy_createStore as createStore, applyMiddleware, Middleware } from 'redux';
+import { compose, legacy_createStore as createStore, applyMiddleware } from 'redux';
+import type { Middleware } from 'redux';
 import { persistStore, persistReducer, PersistConfig } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import logger from 'redux-logger';
@@ -34,12 +35,12 @@ const sagaMiddleware = createSagaMiddleware();
 
 const middlewares = [
   process.env.NODE_ENV !== 'production' && logger, sagaMiddleware
-].filter((middleware): middleware is Middleware => Boolean(middleware)); // Middleware type from redux
+].filter((middleware) => Boolean(middleware)); // Middleware type from redux
 
 // to use redux dev tools chrome extension
 const composeEnhancer = (process.env.NODE_ENV !== 'production' && window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ) || compose
 
-
+// @ts-ignore
 const composedEnhancers = composeEnhancer(applyMiddleware(...middlewares));
 //const composedEnhancers = compose(applyMiddleware(...middlewares));
 

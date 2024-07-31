@@ -13,6 +13,7 @@ export const BaseButton = styled.button`
   background-color: black;
   color: white;
   text-transform: uppercase;
+  text-wrap: nowrap;
   font-family: 'Open Sans Condensed';
   font-weight: bolder;
   cursor: pointer;

@@ -30,7 +30,7 @@ export const Body = styled.div`
     color: #4a4a4a;
     text-transform: uppercase;
   }
-  
+
   p {
     font-weight: lighter;
     font-size: 16px;
@@ -66,5 +66,9 @@ export const DirectoryItemContainer = styled.div`
 
   &:last-child {
     margin-left: 7.5px;
+  }
+
+  @media screen and (max-width: 800px){
+    height: 200px;
   }
 `
